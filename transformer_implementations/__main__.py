@@ -1,6 +1,6 @@
 import sys
 
-from python_template.lib import hello
+from transformer_implementations.lib import hello
 
 try:
     hello()

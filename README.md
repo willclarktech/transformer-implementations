@@ -1,6 +1,6 @@
-# Python Template
+# Transformer Implementations
 
-A template for Python projects.
+Various implementations of transformers etc.
 
 ## Prerequisites
 
@@ -39,7 +39,7 @@ pip install -r requirements.colab.txt
 An executable is provided in `./bin`. From the root directory run:
 
 ```sh
-./bin/python_template
+./bin/transformer_implementations
 ```
 
 This will also pass on additional arguments.
@@ -49,9 +49,9 @@ This will also pass on additional arguments.
 Use the exposed `hello` function:
 
 ```py
-import python_template
+import transformer_implementations
 
-python_template.hello()
+transformer_implementations.hello()
 ```
 
 ### Notebooks
@@ -69,7 +69,7 @@ The following scripts assume the requirements have been installed. If using poet
 ### Lint
 
 ```sh
-pylint ./python_template
+pylint ./transformer_implementations
 ```
 
 ### Typecheck
@@ -81,7 +81,7 @@ mypy
 ### Format
 
 ```sh
-black ./python_template
+black ./transformer_implementations
 ```
 
 ### Generating requirements files
