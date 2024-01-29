@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -o errexit -o nounset -o pipefail
+command -v shellcheck >/dev/null && shellcheck "$0"
+
+DIR="$(cd "$(dirname "$0")" >/dev/null 2>&1 && pwd)"
+DIR="$(dirname "$DIR")"
+PYTHONPATH="$DIR" python3 "$DIR/python_template" "$@"
