@@ -8,6 +8,13 @@ version = "0.0.0"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+pandas = "^2.2.0"
+torch = "^2.1.2"
+torchdata = "^0.7.1"
+torchtext = "^0.16.2"
+spacy = "^3.7.2"
+altair = "^5.2.0"
+jupytext = "^1.16.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.1.1"
