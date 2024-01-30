@@ -87,7 +87,7 @@ class DummyScheduler(LRScheduler):
 
 class MultiHeadedAttention(nn.Module):
     def __init__(self, h: int, d_model: int, dropout: float = 0.1) -> None:
-        super(MultiHeadedAttention, self).__init__()
+        super().__init__()
         assert d_model % h == 0, f"d_model: {d_model}; h: {h}"
         # Assume that d_v always equals d_k
         self.d_k = d_model // h
@@ -120,7 +120,7 @@ class MultiHeadedAttention(nn.Module):
 
 class PositionwiseFeedForward(nn.Module):
     def __init__(self, d_model: int, d_ff: int, dropout: float = 0.1) -> None:
-        super(PositionwiseFeedForward, self).__init__()
+        super().__init__()
         self.w_1 = nn.Linear(d_model, d_ff)
         self.w_2 = nn.Linear(d_ff, d_model)
         self.dropout = nn.Dropout(dropout)
@@ -135,7 +135,7 @@ class LayerNorm(nn.Module):
     """
 
     def __init__(self, features: int, epsilon: float = 1e-6) -> None:
-        super(LayerNorm, self).__init__()
+        super().__init__()
         self.a_2 = nn.Parameter(torch.ones(features))
         self.b_2 = nn.Parameter(torch.zeros(features))
         self.epsilon = epsilon
@@ -153,7 +153,7 @@ class SublayerConnection(nn.Module):
     """
 
     def __init__(self, size: int, dropout: float) -> None:
-        super(SublayerConnection, self).__init__()
+        super().__init__()
         self.norm = LayerNorm(size)
         self.dropout = nn.Dropout(dropout)
 
@@ -173,7 +173,7 @@ class EncoderLayer(nn.Module):
         feed_forward: Module1Input,
         dropout: float,
     ) -> None:
-        super(EncoderLayer, self).__init__()
+        super().__init__()
         self.size = size
         self.self_attention = self_attention
         self.feed_forward = feed_forward
@@ -190,7 +190,7 @@ class Encoder(nn.Module):
     """
 
     def __init__(self, layer: EncoderLayer, n: int) -> None:
-        super(Encoder, self).__init__()
+        super().__init__()
         self.layers = clones(layer, n)
         self.norm = LayerNorm(layer.size)
 
@@ -213,7 +213,7 @@ class DecoderLayer(nn.Module):
         feed_forward: Module1Input,
         dropout: float,
     ) -> None:
-        super(DecoderLayer, self).__init__()
+        super().__init__()
         self.size = size
         self.self_attention = self_attention
         self.source_attention = source_attention
@@ -236,7 +236,7 @@ class Decoder(nn.Module):
     """
 
     def __init__(self, layer: DecoderLayer, n: int) -> None:
-        super(Decoder, self).__init__()
+        super().__init__()
         self.layers = clones(layer, n)
         self.norm = LayerNorm(layer.size)
 
@@ -250,7 +250,7 @@ class Decoder(nn.Module):
 
 class Embeddings(nn.Module):
     def __init__(self, d_model: int, vocab: int) -> None:
-        super(Embeddings, self).__init__()
+        super().__init__()
         self.lut = nn.Embedding(vocab, d_model)
         self.d_model = d_model
 
@@ -262,7 +262,7 @@ class PositionalEncoding(nn.Module):
     positional_encoding: Tensor
 
     def __init__(self, d_model: int, dropout: float, max_length: int = 5000) -> None:
-        super(PositionalEncoding, self).__init__()
+        super().__init__()
         self.dropout = nn.Dropout(dropout)
 
         positional_encoding = torch.zeros(max_length, d_model)
@@ -286,7 +286,7 @@ class GeneratorModule(nn.Module):
     """
 
     def __init__(self, d_model: int, vocab: int) -> None:
-        super(GeneratorModule, self).__init__()
+        super().__init__()
         self.projection = nn.Linear(d_model, vocab)
 
     def forward(self, x: Tensor) -> Tensor:
@@ -306,7 +306,7 @@ class EncoderDecoder(nn.Module):
         target_embed: nn.Module,
         generator: GeneratorModule,
     ):
-        super(EncoderDecoder, self).__init__()
+        super().__init__()
         self.encoder = encoder
         self.decoder = decoder
         self.source_embed = source_embed
@@ -334,7 +334,7 @@ class EncoderDecoder(nn.Module):
 
 class LabelSmoothing(nn.Module):
     def __init__(self, size: int, padding_idx: int, smoothing: float = 0.0) -> None:
-        super(LabelSmoothing, self).__init__()
+        super().__init__()
         self.criterion = nn.KLDivLoss(reduction="sum")
         self.padding_idx = padding_idx
         self.confidence = 1.0 - smoothing
