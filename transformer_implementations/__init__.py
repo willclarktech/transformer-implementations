@@ -1,3 +1,3 @@
-from transformer_implementations.lib import hello
+from transformer_implementations.lib import run
 
-__all__ = ["hello"]
+__all__ = ["run"]

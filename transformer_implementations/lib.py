@@ -553,7 +553,7 @@ def greedy_decode(
     return ys
 
 
-def hello() -> None:
+def run() -> None:
     MAX_VALUE = 11
     N = 2
     LEARNING_RATE = 0.5
