@@ -553,13 +553,14 @@ def greedy_decode(
     return ys
 
 
-def run() -> None:
-    MAX_VALUE = 11
-    N = 2
-    LEARNING_RATE = 0.5
-    BATCH_SIZE = 80
-    N_EPOCHS = 20
+MAX_VALUE = 11
+N = 2
+LEARNING_RATE = 0.5
+BATCH_SIZE = 80
+N_EPOCHS = 20
 
+
+def run() -> None:
     criterion = LabelSmoothing(MAX_VALUE, 0)
     model = make_model(MAX_VALUE, MAX_VALUE, N)
     optimizer = Adam(model.parameters(), lr=LEARNING_RATE, betas=(0.9, 0.98), eps=1e-9)
