@@ -457,35 +457,6 @@ def generate_data(
         yield Batch(source, target, 0)
 
 
-def inference_test() -> None:
-    vocab_size = 11
-    n = 1
-    d_model = 10
-    d_ff = 10
-    h = 2
-    dropout = 0.1
-    test_model = make_model(vocab_size, vocab_size, n, d_model, d_ff, h, dropout)
-    test_model.eval()
-    source = torch.LongTensor([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    source_mask = torch.ones(1, 1, 10)
-
-    memory = test_model.encode(source, source_mask)
-    ys = torch.zeros(1, 1).type_as(source)
-
-    for _ in range(9):
-        out = test_model.decode(
-            memory, source_mask, ys, subsequent_mask(ys.size(1)).type_as(source.data)
-        )
-        probabilities = test_model.generator(out[:, -1])
-        _, next_word = torch.max(probabilities, dim=1)
-        next_word = next_word.data[0]
-        ys = torch.cat(
-            [ys, torch.empty(1, 1).type_as(source.data).fill_(next_word)], dim=1
-        )
-
-    print(f"Example Untrained Model Prediction: {ys}")
-
-
 def run_epoch(
     data_iter: Iterable[Batch],
     model: EncoderDecoder,
