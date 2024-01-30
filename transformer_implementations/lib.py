@@ -69,22 +69,6 @@ def attention(
 ### CLASSES ###
 
 
-class DummyOptimizer(Optimizer):
-    def __init__(self) -> None:
-        self.param_groups = [{"lr": 0}]
-
-    def step(self) -> None:  # type: ignore[override]
-        pass
-
-    def zero_grad(self, set_to_none: bool = False) -> None:
-        pass
-
-
-class DummyScheduler(LRScheduler):
-    def step(self, epoch: int | None = None) -> None:
-        pass
-
-
 class MultiHeadedAttention(nn.Module):
     def __init__(self, h: int, d_model: int, dropout: float = 0.1) -> None:
         super().__init__()
@@ -506,8 +490,8 @@ def run_epoch(
     data_iter: Iterable[Batch],
     model: EncoderDecoder,
     loss_compute: LossLayer,
-    optimizer: Optimizer,
-    scheduler: LRScheduler,
+    optimizer: Optional[Optimizer],
+    scheduler: Optional[LRScheduler],
     mode: str = "train",
     accumulation_iterations: int = 1,
     train_state: TrainState = TrainState(),
@@ -523,6 +507,9 @@ def run_epoch(
         loss, loss_node = loss_compute(out, batch.target_y, batch.n_tokens)
 
         if mode in TRAINING_MODES:
+            assert optimizer is not None, "Cannot train without an optimizer"
+            assert scheduler is not None, "Cannot train without an scheduler"
+
             loss_node.backward()
             train_state.step += 1
             train_state.samples += batch.source.shape[0]
@@ -541,6 +528,8 @@ def run_epoch(
         tokens_per_chunk += batch.n_tokens
 
         if i % 40 == 1 and mode in TRAINING_MODES:
+            assert optimizer is not None, "Cannot train without an optimizer"
+
             learning_rate = optimizer.param_groups[0]["lr"]
             elapsed = time.time() - start
             print(
@@ -609,8 +598,6 @@ def hello() -> None:
             step, model_size=model.source_embed[0].d_model, factor=1.0, warmup=400
         ),
     )
-    dummy_optimizer = DummyOptimizer()
-    dummy_scheduler = DummyScheduler(dummy_optimizer)
     loss_function = SimpleLossCompute(model.generator, criterion)
 
     for _ in range(N_EPOCHS):
@@ -628,8 +615,8 @@ def hello() -> None:
             generate_data(MAX_VALUE, BATCH_SIZE, 5),
             model,
             loss_function,
-            dummy_optimizer,
-            dummy_scheduler,
+            None,
+            None,
             mode="eval",
         )
 
