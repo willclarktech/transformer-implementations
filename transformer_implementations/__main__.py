@@ -1,9 +1,9 @@
 import sys
 
-from transformer_implementations.lib import run
+from transformer_implementations.transformer import run as run_transformer
 
 try:
-    run()
+    run_transformer()
 # pylint: disable=broad-except
 except Exception as exception:
     print(f"{type(exception).__name__}: {exception}")
