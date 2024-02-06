@@ -1,10 +1,11 @@
 import sys
 
-from transformer_implementations.transformer import run as run_transformer
+from transformer_implementations.rwkv import run as run_rwkv
 
-try:
-    run_transformer()
-# pylint: disable=broad-except
-except Exception as exception:
-    print(f"{type(exception).__name__}: {exception}")
-    sys.exit(1)
+run_rwkv()
+# try:
+#     run_rwkv()
+# # pylint: disable=broad-except
+# except Exception as exception:
+#     print(f"{type(exception).__name__}: {exception}")
+#     sys.exit(1)
